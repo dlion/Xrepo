@@ -191,7 +191,8 @@ Package() {
 	div
 	echo -n "inserire il percorso del repo:"
 	read RP
-	cd $RP
+	echo "$RP"
+	cd "$RP"
 	dpkg-scanpackages -m . /dev/null > Packages
 	sleep 2
 	clear
