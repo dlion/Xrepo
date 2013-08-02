@@ -40,11 +40,16 @@ repo_struttura() {
 	div
     echo -n "Immetti il nome da assegnare alla REPO: "
     read REPO
-    echo la tua repo si chiama REPO=$REPO
-    mkdir $REPO
-    mkdir $REPO/debs
-    cd $REPO
-    > Release
+    if [ ! -z "$REPO" ]; then
+    	echo la tua repo si chiama REPO=$REPO
+    	mkdir -p $REPO
+    	mkdir -p $REPO/debs
+    	cd $REPO
+    	> Release
+    else
+    	echo "CoccoDio !!! Devi inserire un nome da dare al repo!"
+    	Menu
+    fi
 }
 deb_struttura() {
 	clear
@@ -62,6 +67,7 @@ deb_struttura() {
 	    > Postrm
 	else
 	    echo "CoccoDio !!! Devi inserire un nome valido!"
+	    Menu
 	fi
 }
 div() {
