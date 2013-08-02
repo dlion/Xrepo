@@ -51,21 +51,25 @@ deb_struttura() {
 	div
 	echo -n "Immetti il nome da assegnare al DEB: "
 	read DEB
-	mkdir $DEB
-	mkdir $DEB/DEBIAN
-	cd $DEB/DEBIAN
-	> control
-	> Preinst
-	> Postinst
-	> Prerm
-	> Postrm
+	if [ ! -z "$DEB" ]; then
+	    mkdir -p $DEB
+	    mkdir -p $DEB/DEBIAN
+	    cd $DEB/DEBIAN
+	    > control
+	    > Preinst
+	    > Postinst
+	    > Prerm
+	    > Postrm
+	else
+	    echo "CoccoDio !!! Devi inserire un nome valido!"
+	fi
 }
 div() {
 	echo "${txr}${sxb}${gxo}                                  X-REPO                                  ${cxl}"
 } 
 Relise() {
-	clear
-	div
+    clear
+    div
     echo "iniziamo a editare il file Relise"
     echo -n "il campo Origin specifica il proprietario del repository: " 
     read Origin
@@ -192,8 +196,20 @@ Package() {
 	echo -n "inserire il percorso del repo:"
 	read RP
 	echo "$RP"
-	cd "$RP"
-	dpkg-scanpackages -m . /dev/null > Packages
+	
+	if [  -d "$RP" ]; then
+	    cd "$RP"
+	    
+	    if type -p dpkg-scanpackages > /dev/null; then
+	        dpkg-scanpackages -m . /dev/null > Packages
+	    else
+	    	echo "CoccoDio !!! Non hai installato dpkg-scanpackages, sicuro di essere sulla distro giusta!?"
+	    fi
+	
+	else
+	    echo "CoccoDio !!! Il repo non esiste!"
+	fi
+	
 	sleep 2
 	clear
 }
